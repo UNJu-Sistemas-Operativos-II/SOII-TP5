@@ -273,6 +273,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const actionBank = document.getElementById('action-bank');
     const dropzones = document.querySelectorAll('.slot-dropzone');
 
+    // Barajado aleatorio (Fisher-Yates) para neutralizar cualquier sesgo de orden de presentación
+    function shuffleBankChips() {
+        if (!actionBank) return;
+        const chips = Array.from(actionBank.children);
+        for (let i = chips.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            actionBank.appendChild(chips[j]);
+        }
+    }
+    shuffleBankChips();
+
     function renderDndChip(token) {
         const bankChip = actionBank.querySelector(`[data-token="${token}"]`);
         const label = bankChip ? bankChip.innerHTML : token;

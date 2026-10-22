@@ -262,8 +262,8 @@
                     <span class="switch-label">3. Estructura de Proceso Coordinador y Trabajadores</span>
                     <span class="switch-desc">Un nodo centralizado toma decisiones, asigna tareas y despacha trabajos, constituyendo un punto único de fallo (SPOF).</span>
                     <div class="segment-control">
-                        <button class="segment-btn" data-val="GRUPO_COMPANERO">Grupo Compañero (Peer)</button>
                         <button class="segment-btn" data-val="GRUPO_JERARQUICO">Grupo Jerárquico</button>
+                        <button class="segment-btn" data-val="GRUPO_COMPANERO">Grupo Compañero (Peer)</button>
                     </div>
                 </div>
 
@@ -416,31 +416,31 @@
             </details>
 
             <div class="dnd-container">
-                <!-- Banco de Acciones Desanonimizado (SIN NÚMEROS PREFIJADOS) -->
+                <!-- Banco de Acciones Desanonimizado y Mezclado (Evita Pre-Sorted Bias) -->
                 <div class="action-bank" id="action-bank">
+                    <div class="dnd-chip" draggable="true" data-token="KERNEL_RECV_NET">
+                        <span>📥</span>
+                        <span>El kernel del servidor recibe el paquete y se lo transfiere al Server Stub</span>
+                    </div>
                     <div class="dnd-chip" draggable="true" data-token="CLIENT_CALL">
                         <span>💻</span>
                         <span>El proceso cliente invoca localmente la función llamando al Client Stub</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="SERVER_EXEC_RETURN">
+                        <span>🖥️</span>
+                        <span>El servidor procesa la operación y devuelve la respuesta por el Server Stub</span>
                     </div>
                     <div class="dnd-chip" draggable="true" data-token="CLIENT_STUB_MARSHAL">
                         <span>📦</span>
                         <span>El Client Stub empaqueta los parámetros en un mensaje de red (Marshaling)</span>
                     </div>
-                    <div class="dnd-chip" draggable="true" data-token="KERNEL_SEND_NET">
-                        <span>📤</span>
-                        <span>El kernel del cliente transmite el paquete de red hacia el nodo servidor</span>
-                    </div>
-                    <div class="dnd-chip" draggable="true" data-token="KERNEL_RECV_NET">
-                        <span>📥</span>
-                        <span>El kernel del servidor recibe el paquete y se lo transfiere al Server Stub</span>
-                    </div>
                     <div class="dnd-chip" draggable="true" data-token="SERVER_STUB_UNMARSHAL">
                         <span>📬</span>
                         <span>El Server Stub desempaqueta los parámetros (Unmarshaling) y llama a la rutina</span>
                     </div>
-                    <div class="dnd-chip" draggable="true" data-token="SERVER_EXEC_RETURN">
-                        <span>🖥️</span>
-                        <span>El servidor procesa la operación y devuelve la respuesta por el Server Stub</span>
+                    <div class="dnd-chip" draggable="true" data-token="KERNEL_SEND_NET">
+                        <span>📤</span>
+                        <span>El kernel del cliente transmite el paquete de red hacia el nodo servidor</span>
                     </div>
                 </div>
 
@@ -491,10 +491,10 @@
                     <label for="principio_transparencia">Meta del Principio de Transparencia:</label>
                     <select id="principio_transparencia" class="form-control select-academic" data-qid="principio_transparencia">
                         <option value="">-- Seleccione objetivo --</option>
-                        <option value="PUBLICAR_CODIGO_FUENTE">Publicar el código fuente de las llamadas al sistema</option>
+                        <option value="AUDITORIA_ABIERTA_LOGS">Exponer públicamente los registros de eventos de cada nodo</option>
+                        <option value="CONSISTENCIA_ESTRICTA_ESTADO">Exigir replicación síncrona en memoria de todos los estados</option>
                         <option value="OCULTAR_UBICACION_Y_MIGRACION">Ocultar al usuario la ubicación y migración de recursos</option>
-                        <option value="PERMITIR_INSPECCION_TRAFICO">Permitir la lectura indiscriminada de tramas de red</option>
-                        <option value="ELIMINAR_FIREWALLS">Deshabilitar cortafuegos y políticas de seguridad</option>
+                        <option value="TRAFICO_SIN_CIFRADO">Transmitir paquetes sin cifrar para facilitar la inspección del canal</option>
                     </select>
                 </div>
 
@@ -502,21 +502,21 @@
                     <label for="principio_escalabilidad">Meta del Principio de Escalabilidad:</label>
                     <select id="principio_escalabilidad" class="form-control select-academic" data-qid="principio_escalabilidad">
                         <option value="">-- Seleccione objetivo --</option>
-                        <option value="CRECIMIENTO_SIN_DEGRADAR_RENDIMIENTO">Añadir recursos y nodos sin degradar el rendimiento</option>
-                        <option value="LIMITAR_A_CUATRO_NODOS">Limitar el tamaño del clúster a un número fijo de máquinas</option>
-                        <option value="REQUERIR_REBOOT_GENERAL">Reiniciar todo el clúster ante el ingreso de un nuevo cliente</option>
-                        <option value="UNIFICAR_DIRECCIONES_MAC">Asignar la misma dirección física a todos los procesadores</option>
+                        <option value="MAXIMIZAR_ANCHO_BANDA_LOCAL">Concentrar todo el cómputo en un único nodo con múltiples sockets</option>
+                        <option value="CRECIMIENTO_SIN_DEGRADAR_RENDIMIENTO">Añadir recursos y procesadores sin degradar el rendimiento global</option>
+                        <option value="CONGELAR_TOPOLOGIA_RED">Mantener fija la cantidad de procesadores para tiempos acotados</option>
+                        <option value="PARTICIONAR_MEMORIA_ESTATICA">Preasignar particiones rígidas de memoria virtual entre estaciones</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="vulnerabilidad_spof">Vulnerabilidad Crítica del Grupo Jerárquico:</label>
+                    <label for="vulnerabilidad_spof">Vulnerabilidad Estructural Crítica del Grupo Jerárquico:</label>
                     <select id="vulnerabilidad_spof" class="form-control select-academic" data-qid="vulnerabilidad_spof">
                         <option value="">-- Seleccione vulnerabilidad --</option>
-                        <option value="LENTITUD_EN_DECISIONES">Retrasos excesivos en la toma de decisiones cotidianas</option>
-                        <option value="PUNTO_UNICO_DE_FALLO_COORDINADOR">Punto único de fallo si cae el nodo coordinador</option>
-                        <option value="IMPOSIBILIDAD_AGREGAR_WORKERS">Imposibilidad de incorporar nuevos trabajadores</option>
-                        <option value="SOBRECARGA_MEMORIA_RAM">Consumo de RAM duplicado en cada terminal esclava</option>
+                        <option value="SOBRECARGA_CONSENSO_GLOBAL">Bloqueo por contienda masiva en elecciones de líderes concurrentes</option>
+                        <option value="INCONSISTENCIA_DE_RELOJES">Desincronización progresiva de marcas de tiempo en nodos trabajadores</option>
+                        <option value="REDUNDANCIA_DATOS_EXCESIVA">Consumo excesivo de ancho de banda por difusión continua a réplicas</option>
+                        <option value="PUNTO_UNICO_DE_FALLO_COORDINADOR">Punto único de fallo si colapsa el nodo coordinador central</option>
                     </select>
                 </div>
 
@@ -524,10 +524,10 @@
                     <label for="direccionamiento_grupos">Direccionamiento Eficiente para Grupos (Uno a Muchos):</label>
                     <select id="direccionamiento_grupos" class="form-control select-academic" data-qid="direccionamiento_grupos">
                         <option value="">-- Seleccione tipo de direccionamiento --</option>
-                        <option value="UNICAST_PUNTO_A_PUNTO">Transmisión punto a punto individual con bucles repetidos</option>
-                        <option value="DIRECCION_MULTICAST">Dirección de multidifusión (Multicast) soportada en red</option>
-                        <option value="BROADCAST_TOTAL_DISCO">Difusión en disco rígido secundario mediante inodos</option>
-                        <option value="PUERTOS_SERIE_RS232">Conexión por puertos serie punto a punto con módem</option>
+                        <option value="DIRECCION_MULTICAST">Dirección de multidifusión (Multicast) con soporte a nivel de red</option>
+                        <option value="UNICAST_REPETITIVO">Ráfagas sucesivas de paquetes unicast individuales emisor a receptor</option>
+                        <option value="BROADCAST_INDISCRIMINADO">Inundación masiva por difusión broadcast saturando la subred entera</option>
+                        <option value="ANYCAST_ALEATORIO">Envío anycast enrutado al nodo topológicamente más próximo del grupo</option>
                     </select>
                 </div>
             </div>
