@@ -1,0 +1,41 @@
+name: GitHub Classroom Autograding - TP 5
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  evaluacion-autograding:
+    name: Autograding Tests - TP5
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Entorno Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar utilitarios del sistema
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq coreutils iproute2 net-tools
+
+      - name: Configurar Permisos de Ejecución
+        run: |
+          chmod +x test.sh ejercicios.sh
+
+      - name: Ejecutar Suite de Evaluación de TP5
+        run: |
+          ./test.sh

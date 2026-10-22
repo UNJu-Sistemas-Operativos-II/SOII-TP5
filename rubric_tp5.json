@@ -1,0 +1,79 @@
+{
+  "tp_metadata": {
+    "tp_id": "SOII-2026-TP5",
+    "title": "TP N° 5: Estructura de los Sistemas Distribuidos",
+    "catedra": "Sistemas Operativos II - UNJu Facultad de Ingeniería",
+    "version": "2.0.0"
+  },
+  "security": {
+    "algorithm": "SHA-256 + Salted HMAC",
+    "protected": true
+  },
+  "max_score": 100,
+  "exercises": {
+    "seccion1_conceptos": {
+      "title": "Sección 1: Conceptos Fundamentales de Sistemas Distribuidos",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 5 (Slides 3-13, 20, 40), Tanenbaum Cap. 1-2 y Silberschatz Cap. 16 sobre Fundamentos de Sistemas Distribuidos.",
+      "hashes": {
+        "q1_definicion_sd": "0096769cd2d2787db7973a691ec969073cc2822853c02fba2ef0aa7c70625e79",
+        "q2_sor_vs_sod": "85f1640ee443693fd1ebfbccd8e1abbf115af27f2b80ca50592cfa564d067de2",
+        "q3_migracion_procesos": "6b9278a79ecd7bca964eace9083b37b73c73ce071fc2afafdc2eaffb7841aa0b",
+        "q4_comunicacion_tanenbaum": "624d0c3643093c64acae6fa664f64b23b0783a0adcf19a7c508997449e3ee245",
+        "q5_principio_transparencia": "3e21e31047252a8234552bcc5660a398070a059f6530b1550ec426bd47bfc70a"
+      }
+    },
+    "seccion2_switches": {
+      "title": "Sección 2: Matriz de Clasificación con Switches Segmentados",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 5 (Slides 8, 25-26, 32-36) sobre tipos de SO, conmutación, contienda y comunicación grupal.",
+      "hashes": {
+        "sw1_tipo_sistema": "de255fc0d22dff2fcbea2b1eabca06ba9a365da493e0c31ae84860405a4ae600",
+        "sw2_origen_mensajes": "f27b8616967e28377e9982c97bb97f55f3e198d76b7578e291e7bdd222c21cab",
+        "sw3_estructura_grupo": "a05f070d321b361321b54db52bd6f0696d7f644dba28845ea7577f382133d5c4",
+        "sw4_conmutacion_red": "4594d1bf5aed3494d73fd554a3dafe80ea4f98b166f7f9e072e4323f087fbc81",
+        "sw5_resolucion_contienda": "505f043dfd5e23209131d32fc06fc89c2be096e924735c28f9b4a2f33457a483",
+        "sw6_administracion_membresia": "2f87ac0235ca20b60edc6d69c642f4bd089d4873db0e3a9d54b541a8dd0089cf"
+      }
+    },
+    "seccion3_laboratorio_rpc": {
+      "title": "Sección 3: Laboratorio de Topologías de Red y Arquitectura RPC",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 5 (Slides 15-18, 20) y Silberschatz Cap. 16 sobre fórmulas de enlaces y comunicación por paso de mensajes.",
+      "hashes": {
+        "topologia_completa_enlaces": "4a4d296d6ecea3c8ba0d0dea3737e2cfeb9cc7406dcc8925f6a5f376665a0743",
+        "topologia_anillo_enlaces": "6241eedac02729df9015a53ba126b85e7b9882ae02bcbd445ffc5143131d7d6e",
+        "topologia_estrella_diametro": "6f4a86d688458802d10eba1b76a03e98dfbca85c16245cc65e042372000699cc",
+        "rpc_mecanismo_comunicacion": "cb42b3a526cc098ad22d9d6818b51ccb63525b1e569d5485f9363d62e4955e3f"
+      }
+    },
+    "seccion4_flujo_rpc": {
+      "title": "Sección 4: Flujo Secuencial de una Llamada RPC (Remote Procedure Call)",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 5 (Slide 13, 20, 27) y Tanenbaum Cap. 2 sobre el ciclo completo de Remote Procedure Call (RPC).",
+      "type": "ordered_list",
+      "list_key": "orden_llamada_rpc",
+      "hashes": {
+        "items": [
+          "d19ca0ea3da00260a50951e007962c14626fcdabcab9a148683514cfd34e2967",
+          "53a701634f73751431d73c02b7083a32ee2507a84df7582a3f484e1b259febab",
+          "dcb4f5f44e7568a479b046e9aab0bde1ed90a567e2eece5f4b904babcc84281e",
+          "6598a87af8bf2d68fd8104d30eb171badc9307550f293b67e6af88170dfc6224",
+          "d73232a2b9dde574dd7eb3cfb5ac45d1204fa08be302081dc094fcf78840c397",
+          "7c1cb24c70bda0e061775d8fb51f6138f15f36f0f017ee852e822eb87878edef"
+        ]
+      }
+    },
+    "seccion5_principios_diseno": {
+      "title": "Sección 5: Principios de Diseño, Robustez y Tolerancia a Fallos",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 5 (Slides 33-40) sobre principios de diseño (transparencia, escalabilidad) y robustez de grupos.",
+      "hashes": {
+        "principio_transparencia": "f6e16f059d5155d5f987fea691503f0649343c6f44c0314a89cecfaa91ebcedd",
+        "principio_escalabilidad": "ca5e18d6bebd60d6a07acacb7edde187c654c9bb4002fe6c8de2e5ce93e4ca2e",
+        "vulnerabilidad_spof": "31bf0458b15ed36d39a52c01a723eb0a4b2f6a4fa86080b2ea2e60be75c3aef1",
+        "direccionamiento_grupos": "da0dc53685323b8d654d5bc4430c70b0dd448f8091efc038f486d069b0671025"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "estudiante": {
+    "nombre": "",
+    "legajo": "",
+    "github": ""
+  },
+  "tp_id": "SOII-2026-TP5",
+  "seccion1_conceptos": {
+    "q1_definicion_sd": "",
+    "q2_sor_vs_sod": "",
+    "q3_migracion_procesos": "",
+    "q4_comunicacion_tanenbaum": "",
+    "q5_principio_transparencia": ""
+  },
+  "seccion2_switches": {
+    "sw1_tipo_sistema": "",
+    "sw2_origen_mensajes": "",
+    "sw3_estructura_grupo": "",
+    "sw4_conmutacion_red": "",
+    "sw5_resolucion_contienda": "",
+    "sw6_administracion_membresia": ""
+  },
+  "seccion3_laboratorio_rpc": {
+    "topologia_completa_enlaces": "",
+    "topologia_anillo_enlaces": "",
+    "topologia_estrella_diametro": "",
+    "rpc_mecanismo_comunicacion": ""
+  },
+  "seccion4_flujo_rpc": {
+    "orden_llamada_rpc": []
+  },
+  "seccion5_principios_diseno": {
+    "principio_transparencia": "",
+    "principio_escalabilidad": "",
+    "vulnerabilidad_spof": "",
+    "direccionamiento_grupos": ""
+  }
+}

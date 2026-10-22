@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNJu SO II - TP N° 5: Estructura de los Sistemas Distribuidos</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- SortableJS para Drag & Drop fluido -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Sticky Toolbar Superior -->
+    <header class="sticky-toolbar">
+        <div class="toolbar-brand">
+            <span>🌐</span>
+            <span>UNJu SO II — TP N° 5: Sistemas Distribuidos</span>
+        </div>
+        <div class="toolbar-progress">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-label" id="progress-label">0% (0/25)</span>
+        </div>
+        <div class="toolbar-actions">
+            <button class="btn btn-icon" id="btn-theme-toggle" title="Alternar Modo Claro / Oscuro">🌓</button>
+            <button class="btn btn-outline" id="btn-import-json" title="Cargar respuestas previas">📂 Cargar</button>
+            <input type="file" id="file-import-input" accept=".json" style="display: none;">
+            <button class="btn btn-primary" id="btn-download-json" disabled title="Debe completar el 100% de las actividades académicas para descargar">
+                📥 Descargar respuestas_tp5.json
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Header Hero -->
+        <section class="header-hero">
+            <div class="header-meta">
+                <div class="badge-group">
+                    <span class="badge-tag blue">UNJu — Facultad de Ingeniería</span>
+                    <span class="badge-tag purple">Sistemas Operativos II — 2026</span>
+                    <span class="badge-tag emerald">Cátedra Vázquez — Argañaraz</span>
+                </div>
+                <span class="badge-tag blue">WSL2 / Ubuntu 24.04</span>
+            </div>
+            <h1>Laboratorio Interactivo de Estructura de Sistemas Distribuidos</h1>
+            <p>
+                Plataforma interactiva de aprendizaje autónomo y autoevaluación criptográfica. Complete las 5 secciones académicas (fundamentos teóricos, switches de clasificación binaria, simulador de ciclo RPC y topologías, flujo de llamadas remotas y principios de diseño distribuido) para exportar su archivo <code>respuestas_tp5.json</code> y validarlo con la suite automatizada de pruebas.
+            </p>
+        </section>
+
+        <!-- Datos del Alumno -->
+        <section class="glass-card" id="card-alumno">
+            <h2 class="section-title">👤 Datos del Estudiante</h2>
+            <p class="section-desc">Ingrese sus datos identificatorios. Estos datos son validados para habilitar la descarga pero no influyen en el contador académico de items.</p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="alumno-nombre">Apellido y Nombre *</label>
+                    <input type="text" id="alumno-nombre" class="form-control" placeholder="Ej. Pérez, Juan Manuel" required>
+                </div>
+                <div class="form-group">
+                    <label for="alumno-legajo">Número de Legajo (L.U.) *</label>
+                    <input type="text" id="alumno-legajo" class="form-control" placeholder="Ej. 12345" required>
+                </div>
+                <div class="form-group">
+                    <label for="alumno-github">Usuario de GitHub *</label>
+                    <input type="text" id="alumno-github" class="form-control" placeholder="Ej. juanperez-unju" required>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: Conceptos Fundamentales (Radio Cards - Sin Negritas) -->
+        <section class="glass-card" id="seccion-1">
+            <h2 class="section-title">1️⃣ Conceptos Fundamentales de Sistemas Distribuidos</h2>
+            <p class="section-desc">Seleccione la opción correcta para cada una de las consignas teóricas analizadas en la clase inaugural.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 16 (Estructuras de Sistemas Distribuidos). Andrew S. Tanenbaum: Capítulos 1 y 2 (Sistemas Operativos Distribuidos). Diapositivas de Cátedra: Unidad 5 (Sistemas Distribuidos, diapositivas 1 a 13, 20 y 40).
+                </div>
+            </details>
+
+            <!-- Q1 -->
+            <div class="question-block" data-qid="q1_definicion_sd">
+                <div class="question-header">1. ¿Cuál es la definición precisa de un Sistema Distribuido desde la perspectiva dual del hardware y del software?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_sd" value="A">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">Desde el hardware agrupa nodos sincronizados por una memoria RAM global y desde el software requiere que cada usuario gestione manualmente las direcciones IP.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_sd" value="B">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">Desde el hardware constituye un procesador mononúcleo centralizado y desde el software implementa particiones de swap distribuidas en discos de estado sólido.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_sd" value="C">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">Desde el hardware las máquinas son autónomas e independientes; desde el software el sistema aparece ante los usuarios como una única computadora coherente.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_sd" value="D">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">Desde el hardware exige procesadores idénticos de tipo multiprocesamiento simétrico y desde el software ejecuta microkernels sin llamadas de red.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-block" data-qid="q2_sor_vs_sod">
+                <div class="question-header">2. ¿Qué distingue sustancialmente a un Sistema Operativo de Red (SOR) de un Sistema Operativo Distribuido (SOD)?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q2_sor_vs_sod" value="A">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">En un SOR los usuarios son conscientes de la multiplicidad de máquinas; en un SOD acceden a los recursos locales y remotos de manera indistinguible.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_sor_vs_sod" value="B">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">En un SOR la migración de procesos es imperceptible para los usuarios y en un SOD cada comando exige ingresar credenciales de acceso SSH.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_sor_vs_sod" value="C">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">En un SOR no existe la posibilidad de transferir archivos remotos mientras que en un SOD la memoria caché se comparte por un bus físico común.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_sor_vs_sod" value="D">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">En un SOR todos los servicios de administración son automáticos y en un SOD los clientes deben especificar la dirección MAC del host destino.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-block" data-qid="q3_migracion_procesos">
+                <div class="question-header">3. ¿Cuáles son los motivos teóricos esenciales para que el SOD realice la migración de procesos entre sitios?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q3_migracion_procesos" value="A">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">La sincronización obligatoria de relojes de cuarzo en todos los equipos del clúster antes de permitir la ejecución de hilos de usuario.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_migracion_procesos" value="B">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">La restricción de protocolos de transporte que impide ejecutar más de un proceso por segmento físico de red de área local.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_migracion_procesos" value="C">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">El traslado forzoso de archivos temporales al directorio raíz de almacenamiento masivo para evitar la fragmentación de cilindros magnéticos.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_migracion_procesos" value="D">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">El equilibrio de carga en la CPU, la aceleración de cómputos complejos, la preferencia por hardware dedicado y la cercanía al volumen de datos.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-block" data-qid="q4_comunicacion_tanenbaum">
+                <div class="question-header">4. Según Andrew S. Tanenbaum, ¿cuál es la diferencia más determinante entre un uniprocesador y un sistema distribuido?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q4_comunicacion_tanenbaum" value="A">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">En los sistemas distribuidos las llamadas al sistema se atienden únicamente en modo usuario sin intervención del núcleo de cada estación.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_comunicacion_tanenbaum" value="B">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">En un único procesador los programas deben utilizar sockets de datagramas UDP para transferir bytes entre los registros internos de la ALU.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_comunicacion_tanenbaum" value="C">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">En un sistema distribuido no existe memoria compartida y toda la comunicación entre procesos debe basarse en el intercambio de mensajes.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_comunicacion_tanenbaum" value="D">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">En los sistemas centralizados es indispensable cifrar las transferencias con claves asimétricas para evitar colisiones entre rutinas.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-block" data-qid="q5_principio_transparencia">
+                <div class="question-header">5. En los principios de diseño de sistemas distribuidos, ¿qué postula la propiedad de Transparencia?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q5_principio_transparencia" value="A">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">Que el código fuente de los controladores de red de cada nodo debe publicarse bajo licencias de software de dominio público.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_principio_transparencia" value="B">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">Que el usuario no debe saber dónde están localizados los recursos físicos ni percibir la migración interna de archivos o procesos.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_principio_transparencia" value="C">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">Que cualquier estación conectada al canal puede inspeccionar libremente las tramas y paquetes transmitidos por otros procesadores.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_principio_transparencia" value="D">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">Que los enlaces de comunicaciones deben implementarse exclusivamente mediante fibra óptica transparente para facilitar su diagnóstico lumínico.</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Matriz de Clasificación con Switches Segmentados -->
+        <section class="glass-card" id="seccion-2">
+            <h2 class="section-title">2️⃣ Matriz de Clasificación con Switches Segmentados</h2>
+            <p class="section-desc">Clasifique cada uno de los 6 enunciados técnicos seleccionando el switch binario correspondiente.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Diapositivas Unidad 5: Tipos de Sistemas Operativos (Slide 8), Estrategias de Conexión y Contienda (Slides 25-26), Grupos Cerrados vs Abiertos (Slide 32), Grupos Compañeros vs Jerárquicos (Slides 33-35), Membresía de Grupo (Slide 36).
+                </div>
+            </details>
+
+            <div class="switches-grid">
+                <!-- SW1 -->
+                <div class="switch-item" data-swid="sw1_tipo_sistema">
+                    <span class="switch-label">1. Visibilidad y Gestión Global de Recursos</span>
+                    <span class="switch-desc">El usuario no distingue si un archivo o proceso está local o en otra máquina; el SO gestiona memoria y CPU de forma global.</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="SISTEMA_OPERATIVO_RED">Sist. Op. de Red (SOR)</button>
+                        <button class="segment-btn" data-val="SISTEMA_OPERATIVO_DISTRIBUIDO">Sist. Op. Distribuido (SOD)</button>
+                    </div>
+                </div>
+
+                <!-- SW2 -->
+                <div class="switch-item" data-swid="sw2_origen_mensajes">
+                    <span class="switch-label">2. Origen del Mensaje en Comunicación Grupal</span>
+                    <span class="switch-desc">Cualquier proceso externo que no pertenezca al grupo puede enviar solicitudes o datos a la dirección del grupo.</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="GRUPO_CERRADO">Grupo Cerrado</button>
+                        <button class="segment-btn" data-val="GRUPO_ABIERTO">Grupo Abierto</button>
+                    </div>
+                </div>
+
+                <!-- SW3 -->
+                <div class="switch-item" data-swid="sw3_estructura_grupo">
+                    <span class="switch-label">3. Estructura de Proceso Coordinador y Trabajadores</span>
+                    <span class="switch-desc">Un nodo centralizado toma decisiones, asigna tareas y despacha trabajos, constituyendo un punto único de fallo (SPOF).</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="GRUPO_COMPANERO">Grupo Compañero (Peer)</button>
+                        <button class="segment-btn" data-val="GRUPO_JERARQUICO">Grupo Jerárquico</button>
+                    </div>
+                </div>
+
+                <!-- SW4 -->
+                <div class="switch-item" data-swid="sw4_conmutacion_red">
+                    <span class="switch-label">4. Estrategia de Conexión de Datos</span>
+                    <span class="switch-desc">Los mensajes se dividen en paquetes independientes que pueden seguir distintas rutas y comparten los enlaces físicos.</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="CONMUTACION_CIRCUITOS">Conmutación Circuitos</button>
+                        <button class="segment-btn" data-val="CONMUTACION_PAQUETES">Conmutación Paquetes</button>
+                    </div>
+                </div>
+
+                <!-- SW5 -->
+                <div class="switch-item" data-swid="sw5_resolucion_contienda">
+                    <span class="switch-label">5. Técnica de Resolución de Contienda en Bus</span>
+                    <span class="switch-desc">El nodo escucha el canal antes de transmitir; si detecta una colisión simultánea aborta la transmisión y espera un tiempo aleatorio.</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="CSMA_CD">CSMA/CD</button>
+                        <button class="segment-btn" data-val="PASO_TESTIGO">Paso de Testigo (Token)</button>
+                    </div>
+                </div>
+
+                <!-- SW6 -->
+                <div class="switch-item" data-swid="sw6_administracion_membresia">
+                    <span class="switch-label">6. Administración de Membresía de Grupos</span>
+                    <span class="switch-desc">Existe un servidor dedicado que centraliza altas, bajas y consultas de miembros del grupo de forma rápida y directa.</span>
+                    <div class="segment-control">
+                        <button class="segment-btn" data-val="SERVIDOR_GRUPOS_CENTRAL">Servidor Centralizado</button>
+                        <button class="segment-btn" data-val="ADMINISTRACION_DISTRIBUIDA">Administración Distribuida</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Laboratorio Interactivo Visual de RPC y Topologías -->
+        <section class="glass-card" id="seccion-3">
+            <h2 class="section-title">3️⃣ Laboratorio de Topologías de Red y Arquitectura RPC</h2>
+            <p class="section-desc">Interactúe con el simulador de invocación remota RPC y configure los parámetros teóricos para un clúster de N = 6 nodos.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 16 (Topologías de red: completa L=N(N-1)/2, estrella L=N-1, anillo L=N). Tanenbaum: Capítulo 2 (Mecanismo RPC y ausencia de memoria compartida). Diapositivas Unidad 5 (Slides 15-20 y 27).
+                </div>
+            </details>
+
+            <div class="sim-container">
+                <!-- Diagrama interactivo de flujo RPC -->
+                <div class="rpc-flow-diagram" id="rpc-diagram">
+                    <div class="rpc-node" id="node-client">
+                        <div class="rpc-node-icon">💻</div>
+                        <div class="rpc-node-title">Cliente (Proceso A)</div>
+                        <div class="rpc-node-status" id="status-client">Listo</div>
+                    </div>
+                    <div class="rpc-arrow">➔</div>
+                    <div class="rpc-node" id="node-cstub">
+                        <div class="rpc-node-icon">📦</div>
+                        <div class="rpc-node-title">Client Stub</div>
+                        <div class="rpc-node-status" id="status-cstub">Marshaling</div>
+                    </div>
+                    <div class="rpc-arrow">➔</div>
+                    <div class="rpc-node" id="node-net">
+                        <div class="rpc-node-icon">🌐</div>
+                        <div class="rpc-node-title">Canal de Red</div>
+                        <div class="rpc-node-status" id="status-net">RTT: 12 ms</div>
+                    </div>
+                    <div class="rpc-arrow">➔</div>
+                    <div class="rpc-node" id="node-sstub">
+                        <div class="rpc-node-icon">📬</div>
+                        <div class="rpc-node-title">Server Stub</div>
+                        <div class="rpc-node-status" id="status-sstub">Unmarshaling</div>
+                    </div>
+                    <div class="rpc-arrow">➔</div>
+                    <div class="rpc-node" id="node-server">
+                        <div class="rpc-node-icon">🖥️</div>
+                        <div class="rpc-node-title">Servidor (Proceso B)</div>
+                        <div class="rpc-node-status" id="status-server">Ejecución</div>
+                    </div>
+                </div>
+
+                <div class="packet-indicator" id="rpc-log-monitor">
+                    Estado: Presione el botón para simular una Invocación Remota (RPC).
+                </div>
+
+                <div style="text-align: center; margin: 0.5rem 0 1rem;">
+                    <button class="btn btn-outline" id="btn-run-rpc-sim" type="button">
+                        ▶ Ejecutar Simulación de Invocación RPC
+                    </button>
+                </div>
+
+                <div class="rpc-controls-grid">
+                    <div class="form-group">
+                        <label for="topologia_completa_enlaces">Enlaces en Red Completamente Conectada (N = 6):</label>
+                        <select id="topologia_completa_enlaces" class="form-control select-academic" data-qid="topologia_completa_enlaces">
+                            <option value="">-- Seleccione cantidad de enlaces --</option>
+                            <option value="10">10 enlaces</option>
+                            <option value="12">12 enlaces</option>
+                            <option value="15">15 enlaces</option>
+                            <option value="30">30 enlaces</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="topologia_anillo_enlaces">Enlaces en Red en Anillo (N = 6):</label>
+                        <select id="topologia_anillo_enlaces" class="form-control select-academic" data-qid="topologia_anillo_enlaces">
+                            <option value="">-- Seleccione cantidad de enlaces --</option>
+                            <option value="5">5 enlaces</option>
+                            <option value="6">6 enlaces</option>
+                            <option value="12">12 enlaces</option>
+                            <option value="15">15 enlaces</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="topologia_estrella_diametro">Diámetro de Red en Topología en Estrella:</label>
+                        <select id="topologia_estrella_diametro" class="form-control select-academic" data-qid="topologia_estrella_diametro">
+                            <option value="">-- Seleccione diámetro máximo --</option>
+                            <option value="1">1 salto</option>
+                            <option value="2">2 saltos</option>
+                            <option value="3">3 saltos</option>
+                            <option value="6">6 saltos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rpc_mecanismo_comunicacion">Mecanismo Obligatorio de Interacción en SD:</label>
+                        <select id="rpc_mecanismo_comunicacion" class="form-control select-academic" data-qid="rpc_mecanismo_comunicacion">
+                            <option value="">-- Seleccione mecanismo interno --</option>
+                            <option value="MEMORIA_COMPARTIDA">Memoria RAM Compartida Global</option>
+                            <option value="PASO_MENSAJES">Paso de Mensajes a través de la Red</option>
+                            <option value="SEMAFOROS_HARDWARE">Semáforos por Bus de Datos</option>
+                            <option value="VARIABLES_STATIC">Variables Estáticas de Kernel</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Flujo Secuencial de una Llamada RPC (Drag & Drop) -->
+        <section class="glass-card" id="seccion-4">
+            <h2 class="section-title">4️⃣ Flujo Secuencial de una Llamada RPC (Remote Procedure Call)</h2>
+            <p class="section-desc">Ordene cronológicamente las 6 etapas del ciclo de vida de una llamada RPC arrastrando cada tarjeta a su posición correspondiente.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Andrew S. Tanenbaum: Capítulo 2 (Comunicación entre Procesos: Remote Procedure Call). Diapositivas Unidad 5 (Slide 13, 20 y 27). Etapas: Invocación del cliente -> Client Stub empaqueta (marshaling) -> Envío por red -> Recepción en servidor -> Server Stub desempaqueta (unmarshaling) -> Servidor ejecuta y retorna resultado.
+                </div>
+            </details>
+
+            <div class="dnd-container">
+                <!-- Banco de Acciones Desanonimizado (SIN NÚMEROS PREFIJADOS) -->
+                <div class="action-bank" id="action-bank">
+                    <div class="dnd-chip" draggable="true" data-token="CLIENT_CALL">
+                        <span>💻</span>
+                        <span>El proceso cliente invoca localmente la función llamando al Client Stub</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="CLIENT_STUB_MARSHAL">
+                        <span>📦</span>
+                        <span>El Client Stub empaqueta los parámetros en un mensaje de red (Marshaling)</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="KERNEL_SEND_NET">
+                        <span>📤</span>
+                        <span>El kernel del cliente transmite el paquete de red hacia el nodo servidor</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="KERNEL_RECV_NET">
+                        <span>📥</span>
+                        <span>El kernel del servidor recibe el paquete y se lo transfiere al Server Stub</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="SERVER_STUB_UNMARSHAL">
+                        <span>📬</span>
+                        <span>El Server Stub desempaqueta los parámetros (Unmarshaling) y llama a la rutina</span>
+                    </div>
+                    <div class="dnd-chip" draggable="true" data-token="SERVER_EXEC_RETURN">
+                        <span>🖥️</span>
+                        <span>El servidor procesa la operación y devuelve la respuesta por el Server Stub</span>
+                    </div>
+                </div>
+
+                <!-- Casillas de Ordenamiento (1 a 6) -->
+                <div class="slots-grid" id="slots-grid">
+                    <div class="slot-row" data-index="0">
+                        <span class="slot-index">Etapa 1:</span>
+                        <div class="slot-dropzone" data-slot="0"></div>
+                    </div>
+                    <div class="slot-row" data-index="1">
+                        <span class="slot-index">Etapa 2:</span>
+                        <div class="slot-dropzone" data-slot="1"></div>
+                    </div>
+                    <div class="slot-row" data-index="2">
+                        <span class="slot-index">Etapa 3:</span>
+                        <div class="slot-dropzone" data-slot="2"></div>
+                    </div>
+                    <div class="slot-row" data-index="3">
+                        <span class="slot-index">Etapa 4:</span>
+                        <div class="slot-dropzone" data-slot="3"></div>
+                    </div>
+                    <div class="slot-row" data-index="4">
+                        <span class="slot-index">Etapa 5:</span>
+                        <div class="slot-dropzone" data-slot="4"></div>
+                    </div>
+                    <div class="slot-row" data-index="5">
+                        <span class="slot-index">Etapa 6:</span>
+                        <div class="slot-dropzone" data-slot="5"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: Principios de Diseño, Robustez y Tolerancia a Fallos -->
+        <section class="glass-card" id="seccion-5">
+            <h2 class="section-title">5️⃣ Principios de Diseño, Robustez y Tolerancia a Fallos</h2>
+            <p class="section-desc">Seleccione los principios y propiedades de diseño arquitectónico analizados en la teoría de cátedra.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne: Capítulo 16 (Principios de Diseño: Transparencia, Escalabilidad, Tolerancia a Fallos). Diapositivas Unidad 5: Slides 33 a 40 (Grupos Compañeros vs Jerárquicos, Direccionamiento Multicast y Principios de Diseño).
+                </div>
+            </details>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="principio_transparencia">Meta del Principio de Transparencia:</label>
+                    <select id="principio_transparencia" class="form-control select-academic" data-qid="principio_transparencia">
+                        <option value="">-- Seleccione objetivo --</option>
+                        <option value="PUBLICAR_CODIGO_FUENTE">Publicar el código fuente de las llamadas al sistema</option>
+                        <option value="OCULTAR_UBICACION_Y_MIGRACION">Ocultar al usuario la ubicación y migración de recursos</option>
+                        <option value="PERMITIR_INSPECCION_TRAFICO">Permitir la lectura indiscriminada de tramas de red</option>
+                        <option value="ELIMINAR_FIREWALLS">Deshabilitar cortafuegos y políticas de seguridad</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="principio_escalabilidad">Meta del Principio de Escalabilidad:</label>
+                    <select id="principio_escalabilidad" class="form-control select-academic" data-qid="principio_escalabilidad">
+                        <option value="">-- Seleccione objetivo --</option>
+                        <option value="CRECIMIENTO_SIN_DEGRADAR_RENDIMIENTO">Añadir recursos y nodos sin degradar el rendimiento</option>
+                        <option value="LIMITAR_A_CUATRO_NODOS">Limitar el tamaño del clúster a un número fijo de máquinas</option>
+                        <option value="REQUERIR_REBOOT_GENERAL">Reiniciar todo el clúster ante el ingreso de un nuevo cliente</option>
+                        <option value="UNIFICAR_DIRECCIONES_MAC">Asignar la misma dirección física a todos los procesadores</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="vulnerabilidad_spof">Vulnerabilidad Crítica del Grupo Jerárquico:</label>
+                    <select id="vulnerabilidad_spof" class="form-control select-academic" data-qid="vulnerabilidad_spof">
+                        <option value="">-- Seleccione vulnerabilidad --</option>
+                        <option value="LENTITUD_EN_DECISIONES">Retrasos excesivos en la toma de decisiones cotidianas</option>
+                        <option value="PUNTO_UNICO_DE_FALLO_COORDINADOR">Punto único de fallo si cae el nodo coordinador</option>
+                        <option value="IMPOSIBILIDAD_AGREGAR_WORKERS">Imposibilidad de incorporar nuevos trabajadores</option>
+                        <option value="SOBRECARGA_MEMORIA_RAM">Consumo de RAM duplicado en cada terminal esclava</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccionamiento_grupos">Direccionamiento Eficiente para Grupos (Uno a Muchos):</label>
+                    <select id="direccionamiento_grupos" class="form-control select-academic" data-qid="direccionamiento_grupos">
+                        <option value="">-- Seleccione tipo de direccionamiento --</option>
+                        <option value="UNICAST_PUNTO_A_PUNTO">Transmisión punto a punto individual con bucles repetidos</option>
+                        <option value="DIRECCION_MULTICAST">Dirección de multidifusión (Multicast) soportada en red</option>
+                        <option value="BROADCAST_TOTAL_DISCO">Difusión en disco rígido secundario mediante inodos</option>
+                        <option value="PUERTOS_SERIE_RS232">Conexión por puertos serie punto a punto con módem</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer & Export -->
+        <section class="footer-export">
+            <div class="footer-actions">
+                <button class="btn btn-outline" id="btn-reset-form">🔄 Reiniciar Respuestas</button>
+                <button class="btn btn-primary" id="btn-download-bottom" disabled>
+                    📥 Descargar respuestas_tp5.json
+                </button>
+            </div>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">
+                Una vez descargado el archivo, muévalo a la carpeta <code>soluciones/</code> de su repositorio y ejecute <code>./test.sh</code> en su terminal WSL2.
+            </p>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toast-icon">ℹ️</span>
+        <span id="toast-message">Mensaje informativo</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
