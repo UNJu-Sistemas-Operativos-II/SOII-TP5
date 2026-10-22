@@ -76,8 +76,8 @@ flowchart TD
     C --> D["4. Exportar soluciones/respuestas_tp5.json"]
     B --> E["5. Ejecutar ./test.sh en terminal WSL2"]
     D --> E
-    E -->|Falla algún test o autograder (0-80 Pts)| B
-    E -->|100/100 Pts ✅| F["6. git commit & git push"]
+    E -->|Falla algún test o autograder| B
+    E -->|Aprobado 100/100 Pts| F["6. git commit & git push"]
     F --> G["7. Aprobación en GitHub Actions y Classmoji 🏆"]
 ```
 
