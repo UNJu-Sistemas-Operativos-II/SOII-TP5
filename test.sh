@@ -57,6 +57,10 @@ test_ejercicio1() {
             echo -e "  ${RED}✗ Falta el campo 'INTERFAZ_ACTIVA' en '$target'.${NC}"
             error=1
         fi
+        if ! grep -Eq "^IP_LOCAL:[[:space:]]+[^[:space:]]+" "$target"; then
+            echo -e "  ${RED}✗ Falta una dirección en el campo 'IP_LOCAL'.${NC}"
+            error=1
+        fi
         if ! grep -iq "GATEWAY_DEFAULT" "$target"; then
             echo -e "  ${RED}✗ Falta el campo 'GATEWAY_DEFAULT' en '$target'.${NC}"
             error=1
@@ -105,7 +109,23 @@ test_ejercicio2() {
             echo -e "  ${RED}✗ Enlaces erróneos para red estrella N=6 (debe ser 5).${NC}"
             error=1
         fi
-        if ! grep -iq "DISPONIBILIDAD" "$target" && ! grep -iq "TOLERANCIA A FALLOS" "$target"; then
+        if ! grep -q "TOPOLOGIA_COMPLETA_DIAMETRO: 1" "$target"; then
+            echo -e "  ${RED}✗ Diámetro erróneo para red completa (debe ser 1).${NC}"
+            error=1
+        fi
+        if ! grep -q "TOPOLOGIA_ANILLO_DIAMETRO: 3" "$target"; then
+            echo -e "  ${RED}✗ Diámetro erróneo para red anillo (debe ser 3).${NC}"
+            error=1
+        fi
+        if ! grep -q "TOPOLOGIA_ESTRELLA_DIAMETRO: 2" "$target"; then
+            echo -e "  ${RED}✗ Diámetro erróneo para red estrella (debe ser 2).${NC}"
+            error=1
+        fi
+        if ! grep -Eiq "COSTO.*INSTALACION|COSTO.*COMUNICACION" "$target"; then
+            echo -e "  ${RED}✗ Falta el análisis de costos de instalación y comunicación.${NC}"
+            error=1
+        fi
+        if ! grep -Eiq "DISPONIBILIDAD|TOLERANCIA" "$target"; then
             echo -e "  ${RED}✗ Falta el análisis de disponibilidad o tolerancia a fallos en '$target'.${NC}"
             error=1
         fi
@@ -135,6 +155,22 @@ test_ejercicio3() {
     else
         if ! grep -iq "CLIENT_STUB_MARSHAL" "$target"; then
             echo -e "  ${RED}✗ Falta la etapa 'CLIENT_STUB_MARSHAL' en '$target'.${NC}"
+            error=1
+        fi
+        if ! grep -q "PROCEDIMIENTO_SOLICITADO: CALC_SUM" "$target"; then
+            echo -e "  ${RED}✗ Falta el procedimiento remoto CALC_SUM.${NC}"
+            error=1
+        fi
+        if ! grep -q "PARAMETROS_ENTRADA: 45 55" "$target"; then
+            echo -e "  ${RED}✗ Faltan los parámetros RPC 45 y 55.${NC}"
+            error=1
+        fi
+        if ! grep -q "RPC_REQ:CALC_SUM:45:55" "$target"; then
+            echo -e "  ${RED}✗ Falta el mensaje RPC serializado esperado.${NC}"
+            error=1
+        fi
+        if ! grep -iq "RED_TRANSMISION_PACKET" "$target"; then
+            echo -e "  ${RED}✗ Falta la etapa de transmisión por red.${NC}"
             error=1
         fi
         if ! grep -iq "SERVER_STUB_UNMARSHAL" "$target"; then
@@ -183,6 +219,15 @@ test_ejercicio4() {
         fi
         if ! grep -q "WORKER_C_TAREAS: 2" "$target"; then
             echo -e "  ${RED}✗ Conteo erróneo de tareas para WORKER_C en '$target'.${NC}"
+            error=1
+        fi
+        if ! grep -q "JOB_1[[:space:]]*->[[:space:]]*WORKER_A" "$target" ||
+           ! grep -q "JOB_2[[:space:]]*->[[:space:]]*WORKER_B" "$target" ||
+           ! grep -q "JOB_3[[:space:]]*->[[:space:]]*WORKER_C" "$target" ||
+           ! grep -q "JOB_4[[:space:]]*->[[:space:]]*WORKER_A" "$target" ||
+           ! grep -q "JOB_5[[:space:]]*->[[:space:]]*WORKER_B" "$target" ||
+           ! grep -q "JOB_6[[:space:]]*->[[:space:]]*WORKER_C" "$target"; then
+            echo -e "  ${RED}✗ La asignación Round-Robin de los seis jobs es incorrecta o está incompleta.${NC}"
             error=1
         fi
         if ! grep -iq "ANALISIS_SPOF_COORDINADOR" "$target"; then

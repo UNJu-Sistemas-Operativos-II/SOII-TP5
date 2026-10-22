@@ -1,5 +1,6 @@
-# Claves maestras privadas docentes (Zero-Knowledge)
+# Material privado docente y respuestas de referencia
 *_master.json
+soluciones/respuestas_tp5.json
 
 # Caches y temporales de Python
 __pycache__/

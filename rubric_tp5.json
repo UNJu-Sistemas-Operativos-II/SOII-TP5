@@ -6,7 +6,7 @@
     "version": "2.0.0"
   },
   "security": {
-    "algorithm": "SHA-256 + Salted HMAC",
+    "algorithm": "SHA-256 con salt de cátedra",
     "protected": true
   },
   "max_score": 100,

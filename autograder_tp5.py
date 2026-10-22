@@ -5,7 +5,7 @@ EVALUADOR AUTOMÁTICO DE TRABAJOS PRÁCTICOS - SISTEMAS OPERATIVOS II
 Universidad Nacional de Jujuy (UNJu - Facultad de Ingeniería)
 Ciclo Lectivo 2026 | Titular: Ing. María Fernanda Vázquez | JTP: Ing. Fabio D. Argañaraz
 =============================================================================
-Módulo de Evaluación Criptográfica del Trabajo Práctico N° 5 (Sistemas Distribuidos)
+Módulo de Evaluación del Trabajo Práctico N° 5 (Sistemas Distribuidos)
 """
 
 import sys
@@ -175,6 +175,17 @@ def main():
 
     submission = load_json(args.submission)
     rubric = load_json(args.rubric)
+
+    student = submission.get("estudiante")
+    required_student_fields = ("nombre", "legajo", "github")
+    if not isinstance(student, dict) or any(
+        not str(student.get(field, "")).strip() for field in required_student_fields
+    ):
+        print(
+            "[ERROR] El archivo debe incluir nombre, legajo y usuario de GitHub.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     results = grade_submission(submission, rubric)
 

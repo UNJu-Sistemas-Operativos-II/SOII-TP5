@@ -128,7 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validación de habilitación de descarga
         const nombre = (document.getElementById('alumno-nombre')?.value || '').trim();
         const legajo = (document.getElementById('alumno-legajo')?.value || '').trim();
-        const isReady = (completed === TOTAL_ACADEMIC_ITEMS) && (nombre.length > 0) && (legajo.length > 0);
+        const github = (document.getElementById('alumno-github')?.value || '').trim();
+        const isReady = (completed === TOTAL_ACADEMIC_ITEMS) &&
+            (nombre.length > 0) &&
+            (legajo.length > 0) &&
+            (github.length > 0);
 
         btnDownloadTop.disabled = !isReady;
         if (btnDownloadBottom) btnDownloadBottom.disabled = !isReady;
@@ -234,9 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
         btnRunRpc.addEventListener('click', () => {
             const nodes = ['node-client', 'node-cstub', 'node-net', 'node-sstub', 'node-server'];
             const logs = [
-                '1/5 [CLIENTE] Aplicación invoca llamada remota calc_hash(token) vía Client Stub...',
+                '1/5 [CLIENTE] Aplicación invoca la llamada remota CALC_SUM(45, 55) vía Client Stub...',
                 '2/5 [CLIENT STUB] Empaquetando parámetros en formato de mensaje de red (Marshaling)...',
-                '3/5 [RED] Transmitiendo paquete por el canal TCP/IP. Medición RTT: 14 ms...',
+                '3/5 [RED] Transmitiendo paquete por el canal TCP/IP. Medición RTT: 12 ms...',
                 '4/5 [SERVER STUB] Recibiendo mensaje y desempaquetando parámetros (Unmarshaling)...',
                 '5/5 [SERVIDOR] Procedimiento ejecutado con éxito. Enviando respuesta al cliente. ✅'
             ];
@@ -254,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(runStep, 700);
                 } else {
                     nodes.forEach(id => document.getElementById(id)?.classList.remove('active'));
-                    if (rpcLogMonitor) rpcLogMonitor.textContent = 'Ciclo RPC completado con éxito. Estado: RTT=14ms | OK';
+                    if (rpcLogMonitor) rpcLogMonitor.textContent = 'Ciclo RPC completado con éxito. CALC_SUM(45, 55) = 100 | RTT=12ms | OK';
                     btnRunRpc.disabled = false;
                 }
             }
