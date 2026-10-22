@@ -345,14 +345,52 @@
                     </div>
                 </div>
 
-                <div class="packet-indicator" id="rpc-log-monitor">
-                    Estado: Presione el botón para simular una Invocación Remota (RPC).
+                <!-- Barra de Control Didáctica de la Simulación RPC -->
+                <div class="sim-toolbar">
+                    <div class="sim-btn-group">
+                        <button class="btn btn-primary" id="btn-run-rpc-sim" type="button" title="Reproducir simulación completa">
+                            ▶ Auto-Play
+                        </button>
+                        <button class="btn btn-outline" id="btn-prev-rpc-step" type="button" title="Retroceder a la etapa anterior" disabled>
+                            ⏮ Anterior
+                        </button>
+                        <button class="btn btn-outline" id="btn-next-rpc-step" type="button" title="Avanzar manualmente a la siguiente etapa">
+                            ⏭ Siguiente Paso
+                        </button>
+                        <button class="btn btn-outline" id="btn-reset-rpc-sim" type="button" title="Reiniciar simulador">
+                            🔄 Reiniciar
+                        </button>
+                    </div>
+                    <div class="sim-speed-control">
+                        <label for="rpc-speed-select">⏱️ Velocidad Auto:</label>
+                        <select id="rpc-speed-select" class="form-control select-speed">
+                            <option value="3500">Lectura Pausada (3.5s)</option>
+                            <option value="2500" selected>Didáctica Cómoda (2.5s)</option>
+                            <option value="1500">Rápida (1.5s)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div style="text-align: center; margin: 0.5rem 0 1rem;">
-                    <button class="btn btn-outline" id="btn-run-rpc-sim" type="button">
-                        ▶ Ejecutar Simulación de Invocación RPC
-                    </button>
+                <!-- Monitor Principal de la Etapa Activa -->
+                <div class="packet-indicator" id="rpc-log-monitor">
+                    <div class="rpc-log-header">
+                        <span class="rpc-log-badge" id="rpc-step-badge">Etapa 0 / 5 • En Espera</span>
+                        <span class="rpc-log-timer" id="rpc-log-timer">Lectura libre a su propio ritmo</span>
+                    </div>
+                    <div class="rpc-step-text" id="rpc-step-text">
+                        💡 Presione <strong>▶ Auto-Play</strong> para ver el recorrido completo, o utilice <strong>⏭ Siguiente Paso</strong> para avanzar y leer cada etapa detalladamente.
+                    </div>
+                </div>
+
+                <!-- Historial acumulativo de trazas de red -->
+                <div class="rpc-history-panel">
+                    <div class="rpc-history-header">
+                        <span>📟 Registro de Trazas del Protocolo RPC (Paso a Paso):</span>
+                        <span class="rpc-history-hint">Consulte las etapas ejecutadas sin perder el texto</span>
+                    </div>
+                    <div class="rpc-history-list" id="rpc-history-list">
+                        <div class="rpc-history-empty" id="rpc-history-empty">Aún no se ha iniciado la simulación. Las etapas ejecutadas quedarán registradas aquí para su lectura analítica.</div>
+                    </div>
                 </div>
 
                 <div class="rpc-controls-grid">

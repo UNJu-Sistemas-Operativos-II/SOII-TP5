@@ -232,39 +232,218 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --------------------------------------------------------------------------
-    // 8. Animación Interactiva del Ciclo RPC
+    // 8. Animación Interactiva y Paso a Paso del Ciclo RPC
     // --------------------------------------------------------------------------
-    if (btnRunRpc) {
-        btnRunRpc.addEventListener('click', () => {
-            const nodes = ['node-client', 'node-cstub', 'node-net', 'node-sstub', 'node-server'];
-            const logs = [
-                '1/5 [CLIENTE] Aplicación invoca la llamada remota CALC_SUM(45, 55) vía Client Stub...',
-                '2/5 [CLIENT STUB] Empaquetando parámetros en formato de mensaje de red (Marshaling)...',
-                '3/5 [RED] Transmitiendo paquete por el canal TCP/IP. Medición RTT: 12 ms...',
-                '4/5 [SERVER STUB] Recibiendo mensaje y desempaquetando parámetros (Unmarshaling)...',
-                '5/5 [SERVIDOR] Procedimiento ejecutado con éxito. Enviando respuesta al cliente. ✅'
-            ];
+    const btnPrevRpc = document.getElementById('btn-prev-rpc-step');
+    const btnNextRpc = document.getElementById('btn-next-rpc-step');
+    const btnResetRpc = document.getElementById('btn-reset-rpc-sim');
+    const rpcSpeedSelect = document.getElementById('rpc-speed-select');
+    const rpcStepBadge = document.getElementById('rpc-step-badge');
+    const rpcStepText = document.getElementById('rpc-step-text');
+    const rpcLogTimer = document.getElementById('rpc-log-timer');
+    const rpcHistoryList = document.getElementById('rpc-history-list');
+    const rpcHistoryEmpty = document.getElementById('rpc-history-empty');
 
-            btnRunRpc.disabled = true;
-            let step = 0;
+    const rpcSteps = [
+        {
+            nodeId: 'node-client',
+            badge: 'Etapa 1 / 5 • Cliente',
+            status: 'Invocando...',
+            text: '1/5 [CLIENTE] El proceso de usuario A invoca localmente la función CALC_SUM(45, 55). El kernel suspende el hilo cliente mientras el Client Stub toma el control de los parámetros.',
+            history: '1/5 [CLIENTE] Invocación local de CALC_SUM(45, 55). Hilo cliente en espera bloqueante.'
+        },
+        {
+            nodeId: 'node-cstub',
+            badge: 'Etapa 2 / 5 • Client Stub',
+            status: 'Marshaling...',
+            text: '2/5 [CLIENT STUB] Empaqueta (Marshaling) los parámetros (45 y 55) y el identificador de la función remota en un formato binario estándar de red independiente de la arquitectura.',
+            history: '2/5 [CLIENT STUB] Serialización (Marshaling) de argumentos a mensaje de red estándar.'
+        },
+        {
+            nodeId: 'node-net',
+            badge: 'Etapa 3 / 5 • Canal de Red',
+            status: 'Transmitiendo...',
+            text: '3/5 [CANAL DE RED] El kernel del cliente transmite los paquetes TCP/IP por el medio físico hacia la IP del servidor. Medición de latencia de ida y vuelta: RTT = 12 ms.',
+            history: '3/5 [RED] Transmisión de datagramas por socket TCP/IP hacia nodo remoto (RTT: 12 ms).'
+        },
+        {
+            nodeId: 'node-sstub',
+            badge: 'Etapa 4 / 5 • Server Stub',
+            status: 'Unmarshaling...',
+            text: '4/5 [SERVER STUB] El kernel del servidor recibe el paquete de red y el Server Stub desempaqueta los parámetros (Unmarshaling), convirtiéndolos a tipos de datos nativos de la CPU.',
+            history: '4/5 [SERVER STUB] Desempaquetado (Unmarshaling) y reconstrucción de tipos de datos.'
+        },
+        {
+            nodeId: 'node-server',
+            badge: 'Etapa 5 / 5 • Servidor',
+            status: 'Ejecutando...',
+            text: '5/5 [SERVIDOR] El proceso B ejecuta el procedimiento CALC_SUM(45, 55) = 100 y despacha el mensaje de respuesta de retorno hacia el cliente. Ciclo RPC completado con éxito. ✅',
+            history: '5/5 [SERVIDOR] Ejecución exitosa: CALC_SUM(45, 55) = 100. Respuesta retornada al cliente. ✅'
+        }
+    ];
 
-            function runStep() {
-                nodes.forEach(id => document.getElementById(id)?.classList.remove('active'));
-                if (step < nodes.length) {
-                    const currentNode = document.getElementById(nodes[step]);
-                    if (currentNode) currentNode.classList.add('active');
-                    if (rpcLogMonitor) rpcLogMonitor.textContent = logs[step];
-                    step++;
-                    setTimeout(runStep, 700);
-                } else {
-                    nodes.forEach(id => document.getElementById(id)?.classList.remove('active'));
-                    if (rpcLogMonitor) rpcLogMonitor.textContent = 'Ciclo RPC completado con éxito. CALC_SUM(45, 55) = 100 | RTT=12ms | OK';
-                    btnRunRpc.disabled = false;
-                }
-            }
+    const defaultNodeStatuses = {
+        'status-client': 'Listo',
+        'status-cstub': 'Marshaling',
+        'status-net': 'RTT: 12 ms',
+        'status-sstub': 'Unmarshaling',
+        'status-server': 'Ejecución'
+    };
 
-            runStep();
+    let currentRpcStep = 0;
+    let autoPlayTimer = null;
+
+    function updateRpcControlsState() {
+        if (btnPrevRpc) btnPrevRpc.disabled = currentRpcStep <= 1;
+        if (btnNextRpc) btnNextRpc.disabled = currentRpcStep >= rpcSteps.length;
+    }
+
+    function renderRpcStep(stepIdx) {
+        currentRpcStep = stepIdx + 1;
+        const stepData = rpcSteps[stepIdx];
+
+        rpcSteps.forEach(s => {
+            const el = document.getElementById(s.nodeId);
+            if (el) el.classList.remove('active');
         });
+
+        const currentEl = document.getElementById(stepData.nodeId);
+        if (currentEl) currentEl.classList.add('active');
+
+        if (rpcStepBadge) {
+            rpcStepBadge.textContent = stepData.badge;
+            if (currentRpcStep === 5) {
+                rpcStepBadge.classList.add('completed');
+            } else {
+                rpcStepBadge.classList.remove('completed');
+            }
+        }
+        if (rpcStepText) {
+            rpcStepText.textContent = stepData.text;
+        }
+        if (rpcLogTimer) {
+            rpcLogTimer.textContent = `Paso ${currentRpcStep} de ${rpcSteps.length}`;
+        }
+
+        const statusKey = stepData.nodeId.replace('node-', 'status-');
+        const statusEl = document.getElementById(statusKey);
+        if (statusEl) statusEl.textContent = stepData.status;
+
+        if (rpcHistoryList) {
+            const emptyEl = document.getElementById('rpc-history-empty');
+            if (emptyEl) emptyEl.style.display = 'none';
+            const historyId = `rpc-hist-step-${currentRpcStep}`;
+            if (!document.getElementById(historyId)) {
+                const item = document.createElement('div');
+                item.id = historyId;
+                item.className = `rpc-history-item ${currentRpcStep === 5 ? 'step-final' : ''}`;
+                item.textContent = stepData.history;
+                rpcHistoryList.appendChild(item);
+                rpcHistoryList.scrollTop = rpcHistoryList.scrollHeight;
+            }
+        }
+
+        updateRpcControlsState();
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearTimeout(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+        if (btnRunRpc) {
+            btnRunRpc.textContent = currentRpcStep >= rpcSteps.length ? '🔄 Replay Completo' : '▶ Auto-Play';
+            btnRunRpc.className = 'btn btn-primary';
+        }
+    }
+
+    function startAutoPlay() {
+        if (autoPlayTimer) {
+            stopAutoPlay();
+            return;
+        }
+
+        if (currentRpcStep >= rpcSteps.length) {
+            resetRpcSim();
+        }
+
+        if (btnRunRpc) {
+            btnRunRpc.textContent = '⏸ Pausar';
+            btnRunRpc.className = 'btn btn-outline';
+        }
+
+        function advanceAuto() {
+            const speed = parseInt(rpcSpeedSelect ? rpcSpeedSelect.value : '2500', 10) || 2500;
+            if (currentRpcStep < rpcSteps.length) {
+                renderRpcStep(currentRpcStep);
+                if (currentRpcStep < rpcSteps.length) {
+                    autoPlayTimer = setTimeout(advanceAuto, speed);
+                } else {
+                    stopAutoPlay();
+                    showToast('Ciclo RPC completado con éxito.', '✅');
+                }
+            } else {
+                stopAutoPlay();
+            }
+        }
+
+        advanceAuto();
+    }
+
+    function resetRpcSim() {
+        stopAutoPlay();
+        currentRpcStep = 0;
+
+        rpcSteps.forEach(s => {
+            const el = document.getElementById(s.nodeId);
+            if (el) el.classList.remove('active');
+            const defaultKey = s.nodeId.replace('node-', 'status-');
+            const statusEl = document.getElementById(defaultKey);
+            if (statusEl && defaultNodeStatuses[defaultKey]) {
+                statusEl.textContent = defaultNodeStatuses[defaultKey];
+            }
+        });
+
+        if (rpcStepBadge) {
+            rpcStepBadge.textContent = 'Etapa 0 / 5 • En Espera';
+            rpcStepBadge.classList.remove('completed');
+        }
+        if (rpcStepText) {
+            rpcStepText.innerHTML = '💡 Presione <strong>▶ Auto-Play</strong> para ver el recorrido completo, o utilice <strong>⏭ Siguiente Paso</strong> para avanzar y leer cada etapa detalladamente.';
+        }
+        if (rpcLogTimer) {
+            rpcLogTimer.textContent = 'Lectura libre a su propio ritmo';
+        }
+
+        if (rpcHistoryList) {
+            rpcHistoryList.innerHTML = '<div class="rpc-history-empty" id="rpc-history-empty">Aún no se ha iniciado la simulación. Las etapas ejecutadas quedarán registradas aquí para su lectura analítica.</div>';
+        }
+
+        updateRpcControlsState();
+    }
+
+    if (btnRunRpc) btnRunRpc.addEventListener('click', startAutoPlay);
+
+    if (btnNextRpc) {
+        btnNextRpc.addEventListener('click', () => {
+            stopAutoPlay();
+            if (currentRpcStep < rpcSteps.length) {
+                renderRpcStep(currentRpcStep);
+            }
+        });
+    }
+
+    if (btnPrevRpc) {
+        btnPrevRpc.addEventListener('click', () => {
+            stopAutoPlay();
+            if (currentRpcStep > 1) {
+                renderRpcStep(currentRpcStep - 2);
+            }
+        });
+    }
+
+    if (btnResetRpc) {
+        btnResetRpc.addEventListener('click', resetRpcSim);
     }
 
     // --------------------------------------------------------------------------
